@@ -35,6 +35,6 @@ Only the constraints for the specified group run on each request.
 
 2. **Controller triggers validation:** `@Validated(UrlRequest.ShortenUrl.class)` tells Spring to validate the `UrlRequest` using only the `ShortenUrl` group. Similarly, `@Validated(UrlRequest.GetOriginalUrl.class)` runs only `GetOriginalUrl` constraints.
 
-3. **Selective validation:** When `/shorten-url` receives `{"short_url":"abc"}` (no `original_url`), validation would normally fail because `original_url` is blank. With groups, only `ShortenUrl` constraints run, so `original_url` is required. When `/get-original-url` receives `{"original_url":"https://x.com"}` (no `short_url`), only `GetOriginalUrl` runs, so `short_url` is required and `original_url` is ignored.
+3. **Selective validation:** For `/shorten-url`, only `ShortenUrl` constraints run — so `original_url` is required, and `short_url` is not validated. For `/get-original-url`, only `GetOriginalUrl` constraints run — so `short_url` is required, and `original_url` is ignored. Each endpoint validates only the fields it needs.
 
 4. **Why @Validated instead of @Valid:** `@Valid` does not support groups. Spring's `@Validated` supports the `groups` attribute so the controller can choose which group to validate per endpoint.
